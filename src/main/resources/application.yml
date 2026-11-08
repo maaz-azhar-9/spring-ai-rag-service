@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: spring-ai-rag-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/rag}
+    username: ${DB_USER:rag}
+    password: ${DB_PASSWORD:rag}
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      chat:
+        options:
+          model: ${CHAT_MODEL:gpt-4o-mini}
+          temperature: 0.2
+      embedding:
+        options:
+          model: ${EMBEDDING_MODEL:text-embedding-3-small}
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+
+rag:
+  default-top-k: 4
+  similarity-threshold: 0.35
+  chunk-size: 400
+  llm-timeout: 30s
+  llm-max-attempts: 2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
